@@ -1,0 +1,8 @@
+CREATE TABLE `user`(
+    id bigint PRIMARY KEY auto_increment,
+    create_time datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    user_name VARCHAR(200) NOT NULL COMMENT '用户名',
+    real_name VARCHAR(200) NOT NULL COMMENT '真实姓名',
+    password VARCHAR(200) NOT NULL COMMENT '密码'
+)
