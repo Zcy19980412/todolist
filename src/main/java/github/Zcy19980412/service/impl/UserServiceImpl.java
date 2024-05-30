@@ -1,15 +1,19 @@
 package github.Zcy19980412.service.impl;
 
 
-import com.mysql.cj.jdbc.JdbcConnection;
-import github.Zcy19980412.domain.dto.UserRequestDTO;
+import github.Zcy19980412.domain.dto.request.UserRequestDTO;
+import github.Zcy19980412.domain.dto.response.UserResponseDTO;
 import github.Zcy19980412.service.UserService;
+import github.Zcy19980412.util.JdbcUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -17,18 +21,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserRequestDTO userRequestDTO) {
-        //创建jdbc连接
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
         try {
-            /**
-             *
-             url – a database url of the form jdbc:subprotocol:subname
-             user – the database user on whose behalf the connection is being made
-             password – the user's password
-             */
-            Connection connection = DriverManager
-                    .getConnection("jdbc:mysql://localhost:3306/todolist", "root", "root");
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement("insert into user values(?,?,?,?,?,?)");
+            //校验用户名是否已存在
+            boolean existSameUsername = checkUserNameExist(userRequestDTO.getUsername());
+            if (existSameUsername) {
+                throw new Exception("此用户名已存在");
+            }
+
+            connection = JdbcUtils.getConnection();
+            preparedStatement = JdbcUtils.getPreparedStatement(
+                    connection, "insert into user values(?,?,?,?,?,?)");
+
             preparedStatement.setString(1,null);
             preparedStatement.setString(2,null);
             preparedStatement.setString(3,null);
@@ -36,9 +42,112 @@ public class UserServiceImpl implements UserService {
             preparedStatement.setString(5,userRequestDTO.getRealName());
             preparedStatement.setString(6,userRequestDTO.getPassword());
             preparedStatement.execute();
-            connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
+
+    @Override
+    public List<UserResponseDTO> list() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        List<UserResponseDTO> userResponseDTOS = new ArrayList<>();
+        try {
+            connection = JdbcUtils.getConnection();
+            preparedStatement = JdbcUtils.getPreparedStatement(
+                    connection, "select * from user");
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                UserResponseDTO userResponseDTO = new UserResponseDTO();
+                userResponseDTO.setId(resultSet.getLong("id"));
+                userResponseDTO.setCreateTime(resultSet.getDate("create_time"));
+                userResponseDTO.setUpdateTime(resultSet.getDate("update_time"));
+                userResponseDTO.setUsername(resultSet.getString("user_name"));
+                userResponseDTO.setRealName(resultSet.getString("real_name"));
+                userResponseDTOS.add(userResponseDTO);
+            }
+            return userResponseDTOS;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return userResponseDTOS;
+    }
+
+    public static boolean checkUserNameExist(String username) throws Exception {
+        if (StringUtils.isBlank(username)) {
+            throw new Exception("");
+        }
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = JdbcUtils.getConnection();
+            preparedStatement = JdbcUtils.getPreparedStatement(
+                    connection, "select * from user where user_name = ?");
+            preparedStatement.setString(1, username);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Object object = resultSet.getObject(1);
+                if (object != null) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        throw new Exception();
+    }
+
+
+
+
+
+
 }

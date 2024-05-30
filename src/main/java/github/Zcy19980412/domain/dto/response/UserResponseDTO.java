@@ -1,4 +1,4 @@
-package github.Zcy19980412.domain.dto;
+package github.Zcy19980412.domain.dto.response;
 
 
 import io.swagger.annotations.ApiModelProperty;
@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserRequestDTO {
+public class UserResponseDTO {
 
     private Long id;
 
