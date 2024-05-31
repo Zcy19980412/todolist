@@ -1,0 +1,8 @@
+CREATE TABLE `habit_record`(
+    id bigint PRIMARY KEY auto_increment,
+    create_time datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    habit_id bigint NOT NULL COMMENT '习惯id',
+    checked bit(1) DEFAULT 0 COMMENT '打卡',
+    remark VARCHAR(2000) DEFAULT NULL COMMENT '备注'
+);

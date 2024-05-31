@@ -1,0 +1,11 @@
+CREATE TABLE `habit`(
+    id bigint PRIMARY KEY auto_increment,
+    create_time datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    update_time datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    user_id bigint NOT NULL COMMENT '用户id',
+    gap_days tinyint NOT NULL COMMENT '间隔日',
+    name VARCHAR(200) NOT NULL COMMENT '习惯名称',
+    description VARCHAR(2000) DEFAULT NULL COMMENT '习惯描述',
+    done_rate DECIMAL(3,2) DEFAULT 0 COMMENT '完成率',
+    important_rate int DEFAULT 0 COMMENT '重要度'
+);
