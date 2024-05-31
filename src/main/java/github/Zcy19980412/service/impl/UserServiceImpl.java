@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
             preparedStatement.execute();
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
         } finally {
             if (preparedStatement != null) {
                 try {
@@ -158,6 +159,7 @@ public class UserServiceImpl implements UserService {
                     return true;
                 }
             }
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

@@ -1,6 +1,7 @@
 package github.Zcy19980412.web;
 
 
+import github.Zcy19980412.config.BaseResponse;
 import github.Zcy19980412.domain.dto.request.UserRequestDTO;
 import github.Zcy19980412.domain.dto.response.UserResponseDTO;
 import github.Zcy19980412.service.UserService;
@@ -21,19 +22,21 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/user/save")
-    public void save(@RequestBody UserRequestDTO userRequestDTO) {
+    public BaseResponse<Void> save(@RequestBody UserRequestDTO userRequestDTO) {
         userService.save(userRequestDTO);
+        return BaseResponse.success();
     }
 
 
     @GetMapping("/user/list")
-    public List<UserResponseDTO> list() {
-        return userService.list();
+    public BaseResponse<List<UserResponseDTO>> list() {
+        return BaseResponse.success(userService.list());
     }
 
     @DeleteMapping("/user/delete")
-    public void delete(@RequestParam Long id){
+    public BaseResponse<Void> delete(@RequestParam Long id){
         userService.deleteById(id);
+        return BaseResponse.success();
     }
 
 
