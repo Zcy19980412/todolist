@@ -12,4 +12,6 @@ public interface UserService {
     void save(UserRequestDTO userRequestDTO);
 
     List<UserResponseDTO> list();
+
+    void deleteById(Long id);
 }

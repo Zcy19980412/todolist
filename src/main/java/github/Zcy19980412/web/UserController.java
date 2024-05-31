@@ -5,10 +5,11 @@ import github.Zcy19980412.domain.dto.request.UserRequestDTO;
 import github.Zcy19980412.domain.dto.response.UserResponseDTO;
 import github.Zcy19980412.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,7 +31,10 @@ public class UserController {
         return userService.list();
     }
 
-
+    @DeleteMapping("/user/delete")
+    public void delete(@RequestParam Long id){
+        userService.deleteById(id);
+    }
 
 
 

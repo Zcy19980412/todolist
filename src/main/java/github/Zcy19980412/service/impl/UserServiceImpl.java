@@ -35,16 +35,16 @@ public class UserServiceImpl implements UserService {
             preparedStatement = JdbcUtils.getPreparedStatement(
                     connection, "insert into user values(?,?,?,?,?,?)");
 
-            preparedStatement.setString(1,null);
-            preparedStatement.setString(2,null);
-            preparedStatement.setString(3,null);
-            preparedStatement.setString(4,userRequestDTO.getUsername());
-            preparedStatement.setString(5,userRequestDTO.getRealName());
-            preparedStatement.setString(6,userRequestDTO.getPassword());
+            preparedStatement.setString(1, null);
+            preparedStatement.setString(2, null);
+            preparedStatement.setString(3, null);
+            preparedStatement.setString(4, userRequestDTO.getUsername());
+            preparedStatement.setString(5, userRequestDTO.getRealName());
+            preparedStatement.setString(6, userRequestDTO.getPassword());
             preparedStatement.execute();
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (preparedStatement != null) {
                 try {
                     preparedStatement.close();
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
             return userResponseDTOS;
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (preparedStatement != null) {
                 try {
                     preparedStatement.close();
@@ -102,6 +102,40 @@ public class UserServiceImpl implements UserService {
             }
         }
         return userResponseDTOS;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        if (id == null) {
+            return;
+        }
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = JdbcUtils.getConnection();
+            preparedStatement = JdbcUtils.getPreparedStatement(connection, "delete from user where id = ?");
+            preparedStatement.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 
     public static boolean checkUserNameExist(String username) throws Exception {
@@ -126,7 +160,7 @@ public class UserServiceImpl implements UserService {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (preparedStatement != null) {
                 try {
                     preparedStatement.close();
@@ -144,10 +178,6 @@ public class UserServiceImpl implements UserService {
         }
         throw new Exception();
     }
-
-
-
-
 
 
 }
