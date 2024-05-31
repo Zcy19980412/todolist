@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        input {
+            padding: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1 align="center">TodoList</h1>
+<div class="input-group" align="center">Username: <input id="username" type="text"></div>
+<div class="input-group" align="center">Real Name: <input id="realName" type="text"></div>
+<div class="input-group" align="center">Password: <input id="password" type="password"></div>
+<div align="center">
+    <button onclick="signIn()">Sign In</button>
+    <button onclick="signUp()">Sign Up</button>
+</div>
+
+<script src = "index.js"></script>
+</body>
+</html>
