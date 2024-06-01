@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * 习惯
+ * @author calvin
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

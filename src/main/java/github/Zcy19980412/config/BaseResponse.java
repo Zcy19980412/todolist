@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 通用返回类
+ * @author calvin
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

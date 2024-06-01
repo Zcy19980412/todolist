@@ -4,8 +4,9 @@ package github.Zcy19980412.service.impl;
 import github.Zcy19980412.domain.dto.request.UserRequestDTO;
 import github.Zcy19980412.domain.dto.response.UserResponseDTO;
 import github.Zcy19980412.service.UserService;
-import github.Zcy19980412.util.JdbcUtils;
+import github.Zcy19980412.config.JdbcUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -15,9 +16,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author calvin
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    private JdbcUtils jdbcUtils;
 
     @Override
     public void save(UserRequestDTO userRequestDTO) {
@@ -31,8 +37,8 @@ public class UserServiceImpl implements UserService {
                 throw new Exception("此用户名已存在");
             }
 
-            connection = JdbcUtils.getConnection();
-            preparedStatement = JdbcUtils.getPreparedStatement(
+            connection = jdbcUtils.getConnection();
+            preparedStatement = jdbcUtils.getPreparedStatement(
                     connection, "insert into user values(?,?,?,?,?,?)");
 
             preparedStatement.setString(1, null);
@@ -69,8 +75,8 @@ public class UserServiceImpl implements UserService {
         PreparedStatement preparedStatement = null;
         List<UserResponseDTO> userResponseDTOS = new ArrayList<>();
         try {
-            connection = JdbcUtils.getConnection();
-            preparedStatement = JdbcUtils.getPreparedStatement(
+            connection = jdbcUtils.getConnection();
+            preparedStatement = jdbcUtils.getPreparedStatement(
                     connection, "select * from user");
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -115,8 +121,8 @@ public class UserServiceImpl implements UserService {
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = JdbcUtils.getConnection();
-            preparedStatement = JdbcUtils.getPreparedStatement(connection, "delete from user where id = ?");
+            connection = jdbcUtils.getConnection();
+            preparedStatement = jdbcUtils.getPreparedStatement(connection, "delete from user where id = ?");
             preparedStatement.execute();
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,16 +145,17 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public static boolean checkUserNameExist(String username) throws Exception {
+    @Override
+    public boolean checkUserNameExist(String username){
         if (StringUtils.isBlank(username)) {
-            throw new Exception("");
+            throw new RuntimeException();
         }
         Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            connection = JdbcUtils.getConnection();
-            preparedStatement = JdbcUtils.getPreparedStatement(
+            connection = jdbcUtils.getConnection();
+            preparedStatement = jdbcUtils.getPreparedStatement(
                     connection, "select * from user where user_name = ?");
             preparedStatement.setString(1, username);
 
@@ -178,7 +185,7 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
-        throw new Exception();
+        throw new RuntimeException();
     }
 
 

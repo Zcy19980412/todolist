@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+/**
+ * 习惯记录请求类
+ * @author calvin
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
