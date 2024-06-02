@@ -13,7 +13,9 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background-image: url('pictures/batman.jpg');
+            background-size: cover;
+            background-position: center;
         }
         h1 {
             color: #333;
@@ -25,19 +27,39 @@
             padding: 5px;
             font-size: 16px;
         }
+        .input-group input {
+          background-image: linear-gradient(to bottom, lightblue,white, lightblue);
+          border: none; /* Remove default border if needed */
+          border-radius: 5px;
+          padding: 5px 10px; /* Adjust padding to accommodate gradient */
+        }
         button {
-            padding: 10px 15px;
-            font-size: 16px;
-            margin: 10px 5px;
-            cursor: pointer;
+          background-color: #007bff; /* Blue background */
+          color: white;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
         }
     </style>
 </head>
 <body>
 <h1 align="center">TodoList</h1>
-<div class="input-group" align="center">Username: <input id="username" type="text"></div>
-<div class="input-group" align="center">Real Name: <input id="realName" type="text"></div>
-<div class="input-group" align="center">Password: <input id="password" type="password"></div>
+<div class="input-group" align="center">
+    <span style="color:white; font-weight: bold;">
+        username: <input id="username" type="text">
+    </span>
+</div>
+<div class="input-group" align="center">
+    <span style="color:white; font-weight: bold;">
+        realName: <input id="realName" type="text">
+    </span>
+</div>
+<div class="input-group" align="center">
+    <span style="color:white; font-weight: bold;">
+        password: <input id="password" type="password">
+    </span>
+</div>
+
 <div align="center">
     <button onclick="signIn()">Sign In</button>
     <button onclick="signUp()">Sign Up</button>
