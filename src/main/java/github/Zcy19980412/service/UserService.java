@@ -36,4 +36,11 @@ public interface UserService {
      * @throws Exception
      */
     boolean checkUserNameExist(String username) throws Exception;
+
+    /**
+     * 登录成功返回token
+     * @param userRequestDTO 用户请求类
+     * @return token
+     */
+    String login(UserRequestDTO userRequestDTO);
 }

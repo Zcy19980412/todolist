@@ -23,5 +23,8 @@ public class SystemProperties {
     @Value("${jdbc.password}")
     public String jdbcPassword;
 
+    @Value("${jwt.salt}")
+    public String jwtSalt;
+
 
 }

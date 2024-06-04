@@ -1,15 +1,16 @@
 function signIn() {
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
 
-        // 简单的验证
-        if (username && password) {
-            alert(`Sign In with username: ${username} and password: ${password}`);
-            // 在这里添加你的登录逻辑，比如调用后端API
-        } else {
-            alert('Please enter both username and password.');
-        }
+    // 简单的验证
+    if (username && password) {
+        alert(`Sign In with username: ${username} and password: ${password}`);
+        // 在这里添加你的登录逻辑，比如调用后端API
+    } else {
+        alert('Please enter both username and password.');
     }
+    //调用登录
+}
 
 <!--  注册  -->
 function signUp() {

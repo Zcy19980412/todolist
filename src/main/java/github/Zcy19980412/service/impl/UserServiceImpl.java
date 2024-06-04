@@ -188,5 +188,56 @@ public class UserServiceImpl implements UserService {
         throw new RuntimeException();
     }
 
+    @Override
+    public String login(UserRequestDTO userRequestDTO) {
+        if (userRequestDTO == null
+                || StringUtils.isBlank(userRequestDTO.getUsername())
+                || StringUtils.isBlank(userRequestDTO.getPassword())
+        ) {
+            throw new RuntimeException("缺少参数");
+        }
+        boolean checkLogin = checkLogin(userRequestDTO.getUsername(), userRequestDTO.getPassword());
+        if (!checkLogin) {
+            throw new RuntimeException("账号或密码错误");
+        }
+
+
+        return null;
+    }
+
+    private boolean checkLogin(String username, String password) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = jdbcUtils.getConnection();
+            preparedStatement = jdbcUtils.getPreparedStatement(
+                    connection,
+                    "select exists(select 1 from user where user_name = ? and `password` = ?)");
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getBoolean(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("登录错误:" + e.getMessage());
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 
 }
