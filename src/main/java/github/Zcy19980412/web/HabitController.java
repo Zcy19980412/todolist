@@ -2,7 +2,7 @@ package github.Zcy19980412.web;
 
 
 
-import github.Zcy19980412.config.BaseResponse;
+import github.Zcy19980412.core.BaseResponse;
 import github.Zcy19980412.domain.dto.request.HabitRequestDTO;
 import github.Zcy19980412.service.HabitService;
 import org.springframework.beans.factory.annotation.Autowired;

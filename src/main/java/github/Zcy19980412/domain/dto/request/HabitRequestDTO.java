@@ -1,6 +1,7 @@
 package github.Zcy19980412.domain.dto.request;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +29,7 @@ public class HabitRequestDTO {
     @ApiModelProperty("更新时间")
     private Date updateTime;
 
-    @ApiModelProperty("用户id")
+    @JsonIgnore
     private Long userId;
 
     @ApiModelProperty("间隔日")

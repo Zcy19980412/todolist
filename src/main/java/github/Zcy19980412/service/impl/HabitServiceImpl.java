@@ -1,7 +1,8 @@
 package github.Zcy19980412.service.impl;
 
 
-import github.Zcy19980412.config.JdbcUtils;
+import github.Zcy19980412.core.JdbcUtils;
+import github.Zcy19980412.core.RequestThreadContext;
 import github.Zcy19980412.domain.dto.request.HabitRequestDTO;
 import github.Zcy19980412.service.HabitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,8 @@ public class HabitServiceImpl implements HabitService {
         PreparedStatement preparedStatement = null;
         try {
             //校验用户名是否已存在
-            boolean existSameHabitName = checkHabitExist(habitRequestDTO.getName(),habitRequestDTO.getUserId());
+            boolean existSameHabitName = checkHabitExist(
+                    habitRequestDTO.getName(),RequestThreadContext.getUser().getId());
             if (existSameHabitName) {
                 throw new Exception("此习惯已存在");
             }
@@ -41,7 +43,7 @@ public class HabitServiceImpl implements HabitService {
             preparedStatement.setString(1, null);
             preparedStatement.setDate(2, new Date(System.currentTimeMillis()));
             preparedStatement.setDate(3, new Date(System.currentTimeMillis()));
-            preparedStatement.setLong(4, habitRequestDTO.getUserId());
+            preparedStatement.setLong(4, RequestThreadContext.getUser().getId());
             preparedStatement.setInt(5, habitRequestDTO.getGapDays());
             preparedStatement.setString(6, habitRequestDTO.getName());
             preparedStatement.setString(7, habitRequestDTO.getDescription());

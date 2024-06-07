@@ -1,5 +1,6 @@
-package github.Zcy19980412.config;
+package github.Zcy19980412.core;
 
+import github.Zcy19980412.config.SystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

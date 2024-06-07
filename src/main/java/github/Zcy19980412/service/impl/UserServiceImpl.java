@@ -1,10 +1,16 @@
 package github.Zcy19980412.service.impl;
 
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.jwt.JWTPayload;
+import cn.hutool.jwt.JWTUtil;
+import github.Zcy19980412.Constant.Constant;
+import github.Zcy19980412.config.SystemProperties;
 import github.Zcy19980412.domain.dto.request.UserRequestDTO;
 import github.Zcy19980412.domain.dto.response.UserResponseDTO;
 import github.Zcy19980412.service.UserService;
-import github.Zcy19980412.config.JdbcUtils;
+import github.Zcy19980412.core.JdbcUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +20,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author calvin
@@ -24,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private JdbcUtils jdbcUtils;
+
+    @Autowired
+    private SystemProperties systemProperties;
 
     @Override
     public void save(UserRequestDTO userRequestDTO) {
@@ -196,28 +208,41 @@ public class UserServiceImpl implements UserService {
         ) {
             throw new RuntimeException("缺少参数");
         }
-        boolean checkLogin = checkLogin(userRequestDTO.getUsername(), userRequestDTO.getPassword());
-        if (!checkLogin) {
+        long userId = checkLogin(userRequestDTO.getUsername(), userRequestDTO.getPassword());
+        if (userId == 0) {
             throw new RuntimeException("账号或密码错误");
         }
-
-
-        return null;
+        userRequestDTO.setId(userId);
+        return createToken(userRequestDTO);
     }
 
-    private boolean checkLogin(String username, String password) {
+    private String createToken(UserRequestDTO userRequestDTO) {
+        Date now = DateTime.now();
+        Date overDueTime = DateUtil.offsetHour(now, 24);
+        Map<String,Object> payload = new HashMap<>();
+        payload.put(JWTPayload.ISSUED_AT, now); //开始时间
+        payload.put(JWTPayload.EXPIRES_AT, overDueTime);//过期时间
+        payload.put(JWTPayload.NOT_BEFORE, now);//生效时间
+        payload.put(Constant.LOGIN.USERNAME, userRequestDTO.getUsername());
+        payload.put(Constant.LOGIN.PASSWORD, userRequestDTO.getPassword());
+        payload.put(Constant.LOGIN.USER_ID, userRequestDTO.getId());
+        String key = systemProperties.getJwtSalt();
+        return JWTUtil.createToken(payload, key.getBytes());
+    }
+
+    private long checkLogin(String username, String password) {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
             connection = jdbcUtils.getConnection();
             preparedStatement = jdbcUtils.getPreparedStatement(
                     connection,
-                    "select exists(select 1 from user where user_name = ? and `password` = ?)");
+                    "select id from user where user_name = ? and `password` = ?");
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
-            return resultSet.getBoolean(1);
+            return resultSet.getLong(1);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("登录错误:" + e.getMessage());

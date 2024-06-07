@@ -1,13 +1,13 @@
 package github.Zcy19980412.config;
 
-import cn.hutool.jwt.JWT;
-import cn.hutool.jwt.signers.HMacJWTSigner;
-import cn.hutool.jwt.signers.JWTSigner;
+import github.Zcy19980412.core.RequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 
 
@@ -21,16 +21,32 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private SystemProperties systemProperties;
 
+    @Autowired
+    private RequestInterceptor requestInterceptor;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*");
+                .allowedOrigins("http://localhost:63342") // 允许的域
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .exposedHeaders("Authorization") // 允许前端访问Authorization头
+                .allowCredentials(true)
+                .maxAge(3600);
     }
 
-    public String generateJwtToken(String username,String password) {
-        return "todo";
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(requestInterceptor);
+    }
+
+    /**
+     * 路径需要校验一登陆
+     * @param httpServletRequest
+     * @return 如果需要校验则返回true
+     */
+    public boolean checkLoginPath(HttpServletRequest httpServletRequest) {
+        return !httpServletRequest.getServletPath().startsWith("/security");
     }
 
 

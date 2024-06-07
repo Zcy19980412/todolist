@@ -4,8 +4,43 @@ function signIn() {
 
     // 简单的验证
     if (username && password) {
-        alert(`Sign In with username: ${username} and password: ${password}`);
+        const user = {
+                username: username,
+                password: password
+                };
         // 在这里添加你的登录逻辑，比如调用后端API
+        fetch('http://localhost:8080/security/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(user)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // 获取token
+                    const token = response.headers.get('Authorization');
+                    if (token) {
+                        // 存储token到localStorage
+                        localStorage.setItem('token', token);
+                        alert('Login successful!');
+                        return response.json();
+                    } else {
+                        alert('Token not found in response');
+                        throw new Error('Token not found in response');
+                    }
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    // 跳转到另一个页面
+                    window.location.href = 'http://localhost:63342/todolist/static/habit.html'; // 替换为你想要跳转的页面URL
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while login.');
+                });
     } else {
         alert('Please enter both username and password.');
     }

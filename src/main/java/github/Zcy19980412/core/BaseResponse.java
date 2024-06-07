@@ -1,4 +1,4 @@
-package github.Zcy19980412.config;
+package github.Zcy19980412.core;
 
 
 import lombok.AllArgsConstructor;
