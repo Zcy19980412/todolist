@@ -19,8 +19,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService {
                     connection, "insert into user values(?,?,?,?,?,?)");
 
             preparedStatement.setString(1, null);
-            preparedStatement.setString(2, null);
-            preparedStatement.setString(3, null);
+            preparedStatement.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
+            preparedStatement.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
             preparedStatement.setString(4, userRequestDTO.getUsername());
             preparedStatement.setString(5, userRequestDTO.getRealName());
             preparedStatement.setString(6, userRequestDTO.getPassword());
@@ -217,8 +217,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private String createToken(UserRequestDTO userRequestDTO) {
-        Date now = DateTime.now();
-        Date overDueTime = DateUtil.offsetHour(now, 24);
+        java.util.Date now = DateTime.now();
+        java.util.Date overDueTime = DateUtil.offsetHour(now, 24);
         Map<String,Object> payload = new HashMap<>();
         payload.put(JWTPayload.ISSUED_AT, now); //开始时间
         payload.put(JWTPayload.EXPIRES_AT, overDueTime);//过期时间
@@ -241,7 +241,10 @@ public class UserServiceImpl implements UserService {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
+            boolean next = resultSet.next();
+            if (!next) {
+                throw new RuntimeException("账号或密码不存在");
+            }
             return resultSet.getLong(1);
         } catch (Exception e) {
             e.printStackTrace();

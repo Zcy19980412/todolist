@@ -27,10 +27,12 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:63342") // 允许的域
+                // 允许的域
+                .allowedOriginPatterns("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .exposedHeaders("Authorization") // 允许前端访问Authorization头
+                // 允许前端访问Authorization头
+                .exposedHeaders("Authorization")
                 .allowCredentials(true)
                 .maxAge(3600);
     }
@@ -46,7 +48,10 @@ public class WebConfig implements WebMvcConfigurer {
      * @return 如果需要校验则返回true
      */
     public boolean checkLoginPath(HttpServletRequest httpServletRequest) {
-        return !httpServletRequest.getServletPath().startsWith("/security");
+        return !(httpServletRequest.getServletPath().startsWith("/security")
+                || httpServletRequest.getServletPath().startsWith("/user/save")
+                || "OPTIONS".equals(httpServletRequest.getMethod())
+        );
     }
 
 

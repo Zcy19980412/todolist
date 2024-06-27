@@ -2,3 +2,6 @@ jdbc:
   connectionUrl: "jdbc:mysql://localhost:3306/todolist"
   username: root
   password: 123456
+
+jwt:
+  salt: Calvin

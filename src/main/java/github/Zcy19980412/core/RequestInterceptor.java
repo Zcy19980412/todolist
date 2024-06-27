@@ -21,8 +21,7 @@ public class RequestInterceptor implements HandlerInterceptor {
     private WebConfig webConfig;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         System.out.println("preHandle of Interceptor");
 
@@ -36,19 +35,20 @@ public class RequestInterceptor implements HandlerInterceptor {
                 }
             }
         } catch (Exception e) {
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             throw new RuntimeException("token校验错误:"+e.getMessage());
         }
         return true;
     }
 
+    @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-                            @Nullable ModelAndView modelAndView) throws Exception {
+                           @Nullable ModelAndView modelAndView) throws Exception {
         System.out.println("post handle of Interceptor");
     }
 
+    @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
-                                 @Nullable Exception ex) throws Exception {
+                                @Nullable Exception ex) throws Exception {
         RequestThreadContext.removeCurrentUser();
         System.out.println("afterCompletion of Interceptor");
     }

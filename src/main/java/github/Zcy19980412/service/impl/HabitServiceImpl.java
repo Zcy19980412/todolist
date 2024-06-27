@@ -8,6 +8,7 @@ import github.Zcy19980412.service.HabitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -47,7 +48,7 @@ public class HabitServiceImpl implements HabitService {
             preparedStatement.setInt(5, habitRequestDTO.getGapDays());
             preparedStatement.setString(6, habitRequestDTO.getName());
             preparedStatement.setString(7, habitRequestDTO.getDescription());
-            preparedStatement.setBigDecimal(8, null);
+            preparedStatement.setBigDecimal(8, new BigDecimal(0));
             preparedStatement.setLong(9, habitRequestDTO.getImportantRate());
             preparedStatement.execute();
         } catch (Exception e) {
