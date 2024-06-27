@@ -1,6 +1,8 @@
 package github.Zcy19980412.domain.dto.response;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import github.Zcy19980412.Constant.Constant;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,9 +25,11 @@ public class HabitResponseDTO {
     private Long id;
 
     @ApiModelProperty("创建时间")
+    @JsonFormat(pattern = Constant.Time.DATE_TIME,timezone = Constant.Time.ZONE)
     private Date createTime;
 
     @ApiModelProperty("更新时间")
+    @JsonFormat(pattern = Constant.Time.DATE_TIME,timezone = Constant.Time.ZONE)
     private Date updateTime;
 
     @ApiModelProperty("用户id")

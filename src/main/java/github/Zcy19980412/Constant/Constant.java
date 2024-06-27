@@ -15,7 +15,8 @@ public class Constant {
     }
 
     public static final class Time {
-        public static final String DATE_TIME = "yyyy-MM-ss HH:mm:ss";
+        public static final String DATE_TIME = "yyyy-MM-dd HH:mm:ss";
+        public static final String ZONE = "GMT+8";
     }
 
 
