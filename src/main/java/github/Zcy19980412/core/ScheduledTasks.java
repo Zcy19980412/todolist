@@ -16,8 +16,9 @@ public class ScheduledTasks {
     private HabitRecordService habitRecordService;
 
     @Scheduled(cron = "0 0 1 * * ?")
-    public void generateHabitRecord(){
+    public void liquidateDoneRateAndGenerateHabitRecord(){
         habitRecordService.generateHabitRecord();
+        habitRecordService.liquidateDoneRate();
     }
 
 

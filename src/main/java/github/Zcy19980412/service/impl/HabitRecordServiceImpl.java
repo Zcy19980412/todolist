@@ -120,14 +120,75 @@ public class HabitRecordServiceImpl implements HabitRecordService {
         }
     }
 
-    /**
-     * 从date的下一日开始，没生成一次习惯任务，需要间隔设定个日，
-     *
-     * @param date    开始时间
-     * @param gapDays 间隔日
-     * @return 今日是否生成习惯任务
-     */
-    private static boolean checkGapDay(Date date, int gapDays) {
+    @Override
+    public void liquidateDoneRate() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = jdbcUtils.getConnection();
+            preparedStatement = jdbcUtils.getPreparedStatement(
+                    connection, "UPDATE habit set done_rate = IFNULL(" +
+                            "(SELECT (SELECT count(*) FROM `habit_record` where habit_id = habit.id and checked = 1)" +
+                            "/(SELECT count(*) FROM `habit_record` where habit_id =  habit.id)),0)");
+            preparedStatement.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean waitCheck(Long id) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = jdbcUtils.getConnection();
+            preparedStatement = jdbcUtils.getPreparedStatement(
+                    connection, "select checked from habit_record where habit_id = ? order by id desc limit 1");
+            preparedStatement.setLong(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            boolean checked = resultSet.getBoolean(1);
+            return !checked;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public boolean checkGapDay(Date date, int gapDays) {
         if (gapDays == 0) {
             return true;
         }

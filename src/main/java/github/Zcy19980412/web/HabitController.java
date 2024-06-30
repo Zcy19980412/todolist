@@ -47,4 +47,10 @@ public class HabitController {
         return BaseResponse.success();
     }
 
+    @GetMapping("/check")
+    public BaseResponse<Void> check(@RequestParam Long id) {
+        habitService.check(id);
+        return BaseResponse.success();
+    }
+
 }

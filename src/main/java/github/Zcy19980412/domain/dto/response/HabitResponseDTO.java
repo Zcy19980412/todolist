@@ -50,4 +50,7 @@ public class HabitResponseDTO {
     @ApiModelProperty("重要度")
     private Integer importantRate;
 
+    @ApiModelProperty("今日是否需要打卡")
+    private Boolean needCheck;
+
 }

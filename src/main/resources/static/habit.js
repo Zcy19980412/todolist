@@ -79,6 +79,13 @@ function getHabitList() {
             todoHabitButton.setAttribute("habitId", habit.id); // 设置自定义属性存储习惯的 ID
             todoHabitButton.addEventListener("click", handleTodoHabit); // 添加点击事件处理程序
 
+            if (habit.needCheck) {
+                todoHabitButton.classList.add("todo-button-enabled"); // 添加可点击的样式类
+                todoHabitButton.addEventListener("click", handleTodoHabit); // 添加点击事件处理程序
+            } else {
+                todoHabitButton.classList.add("todo-button-disabled"); // 添加不可点击的样式类
+                todoHabitButton.disabled = true; // 禁用按钮
+            }
 
             cellImportantRate.textContent = habit.importantRate;
             cellName.textContent = habit.name;
@@ -124,5 +131,18 @@ function handleDeleteHabit(event) {
 
 function handleTodoHabit(event) {
     const habitId = event.target.getAttribute("habitId"); // 获取存储在按钮上的习惯 ID
-
+    fetchWithToken("http://localhost:8080/habit/check?id=" + habitId, {
+        method: 'GET'
+    })
+        .then(response => {
+            if (response.success) {
+                getHabitList();
+            } else {
+                const message = response.message;
+                console.log(message);
+                alert("An Error Accrued while deleting habit.");
+            }
+        }).catch(reason => {
+        console.error('Error:', reason);
+    })
 }

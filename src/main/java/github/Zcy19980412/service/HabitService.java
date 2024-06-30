@@ -28,4 +28,10 @@ public interface HabitService {
      * @param id
      */
     void delete(Long id);
+
+    /**
+     * 打卡习惯
+     * @param id
+     */
+    void check(Long id);
 }

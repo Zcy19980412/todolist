@@ -85,6 +85,54 @@
         tbody tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
+        .content {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .content span {
+            font-size: 24px; /* 字号大小 */
+            color: #333; /* 文字颜色 */
+            color: dodgerblue; /* 文字颜色 */
+        }
+
+        /* 可点击状态下的按钮样式 */
+        .todo-button-enabled {
+            background-color: #4CAF50; /* 绿色背景 */
+            color: white; /* 文字颜色为白色 */
+            cursor: pointer; /* 鼠标指针样式为手型 */
+            border: none; /* 去除边框 */
+            padding: 8px 16px; /* 按钮内边距 */
+            text-align: center; /* 文本居中 */
+            text-decoration: none; /* 去除文本装饰 */
+            display: inline-block; /* 行内块级元素 */
+            font-size: 14px; /* 字体大小 */
+            border-radius: 4px; /* 圆角 */
+        }
+
+        .todo-button-enabled:hover {
+            background-color: #45a049; /* 悬停时的背景色略微变深 */
+        }
+
+        /* 不可点击状态下的按钮样式 */
+        .todo-button-disabled {
+            background-color: #dddddd; /* 灰色背景 */
+            color: #aaaaaa; /* 灰色文字 */
+            cursor: not-allowed; /* 禁止点击的鼠标指针样式 */
+            border: none; /* 去除边框 */
+            padding: 8px 16px; /* 按钮内边距 */
+            text-align: center; /* 文本居中 */
+            text-decoration: none; /* 去除文本装饰 */
+            display: inline-block; /* 行内块级元素 */
+            font-size: 14px; /* 字体大小 */
+            border-radius: 4px; /* 圆角 */
+        }
+
+        /* 可点击状态下的按钮悬停效果 */
+        .todo-button-disabled:hover {
+            background-color: #dddddd; /* 悬停时保持灰色 */
+        }
     </style>
 </head>
 <body>

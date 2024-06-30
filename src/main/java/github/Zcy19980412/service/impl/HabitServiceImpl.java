@@ -6,6 +6,7 @@ import github.Zcy19980412.core.RequestThreadContext;
 import github.Zcy19980412.domain.dto.request.HabitRequestDTO;
 import github.Zcy19980412.domain.dto.response.HabitResponseDTO;
 import github.Zcy19980412.domain.entity.User;
+import github.Zcy19980412.service.HabitRecordService;
 import github.Zcy19980412.service.HabitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class HabitServiceImpl implements HabitService {
 
     @Autowired
     private JdbcUtils jdbcUtils;
+
+    @Autowired
+    private HabitRecordService habitRecordService;
 
 
     @Override
@@ -127,6 +131,11 @@ public class HabitServiceImpl implements HabitService {
                 }
             }
         }
+        habitResponseDTOS.forEach(habitResponseDTO ->
+                habitResponseDTO.setNeedCheck(
+                        habitRecordService.checkGapDay(habitResponseDTO.getCreateTime(), habitResponseDTO.getGapDays())
+                        && habitRecordService.waitCheck(habitResponseDTO.getId())
+                ));
         return habitResponseDTOS;
     }
 
@@ -138,6 +147,65 @@ public class HabitServiceImpl implements HabitService {
             connection = jdbcUtils.getConnection();
             preparedStatement = jdbcUtils.getPreparedStatement(
                     connection, "delete from habit where id = ?");
+            preparedStatement.setLong(1, id);
+            preparedStatement.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void check(Long id) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = jdbcUtils.getConnection();
+            preparedStatement = jdbcUtils.getPreparedStatement(
+                    connection,
+                    "UPDATE habit_record set checked = 1 where habit_id = ? order by id desc limit 1");
+            preparedStatement.setLong(1, id);
+            preparedStatement.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        try {
+            connection = jdbcUtils.getConnection();
+            preparedStatement = jdbcUtils.getPreparedStatement(
+                    connection, "UPDATE habit set done_rate = IFNULL(" +
+                            "(SELECT (SELECT count(*) FROM `habit_record` where habit_id = habit.id and checked = 1)" +
+                            "/(SELECT count(*) FROM `habit_record` where habit_id =  habit.id)),0) where habit.id = ?");
             preparedStatement.setLong(1, id);
             preparedStatement.execute();
         } catch (Exception e) {
