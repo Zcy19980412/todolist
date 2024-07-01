@@ -91,7 +91,7 @@ function getHabitList() {
             cellName.textContent = habit.name;
             cellCreateTime.textContent = habit.createTime;
             cellDescription.textContent = habit.description;
-            cellDoneRate.textContent = habit.doneRate;
+            cellDoneRate.textContent = habit.doneRate*100 + '%';
             cellTodo.appendChild(todoHabitButton);
             cellDelete.appendChild(deleteHabitButton);
             row.appendChild(cellImportantRate);

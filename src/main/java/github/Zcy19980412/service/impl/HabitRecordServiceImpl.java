@@ -162,9 +162,13 @@ public class HabitRecordServiceImpl implements HabitRecordService {
                     connection, "select checked from habit_record where habit_id = ? order by id desc limit 1");
             preparedStatement.setLong(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            boolean checked = resultSet.getBoolean(1);
-            return !checked;
+            boolean next = resultSet.next();
+            if (next) {
+                boolean checked = resultSet.getBoolean(1);
+                return !checked;
+            } else {
+                return false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
