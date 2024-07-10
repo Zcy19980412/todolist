@@ -3,8 +3,7 @@
 export function fetchWithToken(url, options = {}) {
     const token = localStorage.getItem('token');
     if (!token) {
-        alert('No token found, please log in first.');
-        return Promise.reject('No token found');
+        window.location.href='index.html';
     }
 
 

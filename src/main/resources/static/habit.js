@@ -43,6 +43,8 @@ function createHabit() {
 window.createHabit = createHabit;
 // 将createHabit函数挂载到window对象上
 window.getHabitList = getHabitList;
+// 将signOut函数挂载到window对象上
+window.signOut = signOut;
 
 function getHabitList() {
     fetchWithToken('http://localhost:8080/habit/list', {
@@ -146,3 +148,13 @@ function handleTodoHabit(event) {
         console.error('Error:', reason);
     })
 }
+
+function signOut() {
+    localStorage.removeItem('token');
+    window.location.href = 'index.html';
+}
+
+
+window.addEventListener('beforeunload',function(e){
+    localStorage.removeItem('token');
+})
