@@ -85,3 +85,7 @@ function signUp() {
         alert('Please fill out all fields.');
     }
 }
+
+window.addEventListener('beforeunload',function(e){
+    localStorage.removeItem('token');
+})
