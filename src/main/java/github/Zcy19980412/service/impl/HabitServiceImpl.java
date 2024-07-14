@@ -93,7 +93,11 @@ public class HabitServiceImpl implements HabitService {
         try {
             connection = jdbcUtils.getConnection();
             preparedStatement = jdbcUtils.getPreparedStatement(
-                    connection, "SELECT * from habit where user_id = ? order by important_rate desc");
+                    connection, "SELECT habit.*,count(*) as totalDays from habit " +
+                            "left JOIN habit_record on habit_record.habit_id = habit.id " +
+                            "where user_id = ? " +
+                            "GROUP BY habit_id " +
+                            "order by important_rate desc");
             preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -109,6 +113,8 @@ public class HabitServiceImpl implements HabitService {
                                 .description(resultSet.getString("description"))
                                 .doneRate(resultSet.getBigDecimal("done_rate"))
                                 .importantRate(resultSet.getInt("important_rate"))
+                                .totalDays(resultSet.getInt("totalDays"))
+                                .doneDays(resultSet.getBigDecimal("done_rate").multiply(new BigDecimal(resultSet.getInt("totalDays"))).intValue())
                                 .build()
                 );
             }

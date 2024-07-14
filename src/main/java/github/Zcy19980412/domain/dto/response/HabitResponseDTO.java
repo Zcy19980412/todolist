@@ -53,4 +53,10 @@ public class HabitResponseDTO {
     @ApiModelProperty("今日是否需要打卡")
     private Boolean needCheck;
 
+    @ApiModelProperty("已完成天数")
+    private Integer doneDays;
+
+    @ApiModelProperty("总天数")
+    private Integer totalDays;
+
 }

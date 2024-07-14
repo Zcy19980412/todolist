@@ -67,6 +67,8 @@ function getHabitList() {
             const cellName = document.createElement("td");
             const cellCreateTime = document.createElement("td");
             const cellDescription = document.createElement("td");
+            const cellDoneDays = document.createElement("td");
+            const cellTotalDays = document.createElement("td");
             const cellDoneRate = document.createElement("td");
             const cellTodo = document.createElement("td");
             const cellDelete = document.createElement("td");
@@ -93,6 +95,8 @@ function getHabitList() {
             cellName.textContent = habit.name;
             cellCreateTime.textContent = habit.createTime;
             cellDescription.textContent = habit.description;
+            cellDoneDays.textContent = habit.doneDays;
+            cellTotalDays.textContent = habit.totalDays;
             cellDoneRate.textContent = habit.doneRate*100 + '%';
             cellTodo.appendChild(todoHabitButton);
             cellDelete.appendChild(deleteHabitButton);
@@ -100,6 +104,8 @@ function getHabitList() {
             row.appendChild(cellName);
             row.appendChild(cellCreateTime);
             row.appendChild(cellDescription);
+            row.appendChild(cellDoneDays);
+            row.appendChild(cellTotalDays);
             row.appendChild(cellDoneRate);
             row.appendChild(cellTodo);
             row.appendChild(cellDelete);
