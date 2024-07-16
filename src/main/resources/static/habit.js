@@ -97,7 +97,7 @@ function getHabitList() {
             cellDescription.textContent = habit.description;
             cellDoneDays.textContent = habit.doneDays;
             cellTotalDays.textContent = habit.totalDays;
-            cellDoneRate.textContent = habit.doneRate*100 + '%';
+            cellDoneRate.textContent = Math.floor(habit.doneRate*100) + '%';
             cellTodo.appendChild(todoHabitButton);
             cellDelete.appendChild(deleteHabitButton);
             row.appendChild(cellImportantRate);
