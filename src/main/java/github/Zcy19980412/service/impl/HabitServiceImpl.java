@@ -93,10 +93,10 @@ public class HabitServiceImpl implements HabitService {
         try {
             connection = jdbcUtils.getConnection();
             preparedStatement = jdbcUtils.getPreparedStatement(
-                    connection, "SELECT habit.*,count(*) as totalDays from habit " +
+                    connection, "SELECT habit.*,count(habit_record.id) as totalDays from habit " +
                             "left JOIN habit_record on habit_record.habit_id = habit.id " +
                             "where user_id = ? " +
-                            "GROUP BY habit_id " +
+                            "GROUP BY habit.id " +
                             "order by important_rate desc");
             preparedStatement.setLong(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
