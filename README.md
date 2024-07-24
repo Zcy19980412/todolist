@@ -1,11 +1,4 @@
-# todolist
-A management of todolist.
-
-
-<a name="iR9uF"></a>
-
 ### introduction
-
 TodoListManagement designed to help you building habits by setting goals and recording your checkups. To use this management , you only need three steps.
 
 1. list a habit which you want to build
@@ -13,8 +6,6 @@ TodoListManagement designed to help you building habits by setting goals and rec
 3. check todolist daily
 
 Also, TodoListManagement will offer great visual interface.
-
-<a name="fMKRO"></a>
 
 ### design
 
@@ -31,9 +22,12 @@ Also, TodoListManagement will offer great visual interface.
         3. record
 3. grafana
 
-<a name="goAhT"></a>
+### deploy
+
+1. mysql
+    1. create database
+    2. execute .sql files in `src/main/resources/db/sql` by version
 
 ### links
-
 end：[https://github.com/Zcy19980412/todolist](https://github.com/Zcy19980412/todolist)
 
