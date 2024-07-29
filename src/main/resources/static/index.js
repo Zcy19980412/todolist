@@ -1,3 +1,10 @@
+import {config} from "./globalConfig.js";
+
+
+window.signIn = signIn;
+window.signUp = signUp;
+
+
 function signIn() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -9,7 +16,7 @@ function signIn() {
                 password: password
                 };
         // 在这里添加你的登录逻辑，比如调用后端API
-        fetch('http://localhost:8080/security/login', {
+        fetch(config.url + '/security/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -36,7 +43,7 @@ function signIn() {
                 .then(data => {
                     console.log('Success:', data);
                     // 跳转到另一个页面
-                    window.location.href = 'http://localhost:63342/todolist/static/habit.html'; // 替换为你想要跳转的页面URL
+                    window.location.href = config.url + '/habit.html'; // 替换为你想要跳转的页面URL
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -48,7 +55,7 @@ function signIn() {
     //调用登录
 }
 
-<!--  注册  -->
+
 function signUp() {
     const username = document.getElementById('username').value;
     const realName = document.getElementById('realName').value;
@@ -61,7 +68,7 @@ function signUp() {
             password: password
         };
 
-        fetch('http://localhost:8080/user/save', {
+        fetch(config.url + '/user/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

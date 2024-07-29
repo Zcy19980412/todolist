@@ -1,4 +1,5 @@
 import {fetchWithToken} from "./utils.js";
+import {config} from "./globalConfig.js";
 
 
 function createHabit() {
@@ -15,7 +16,7 @@ function createHabit() {
             importantRate: importantRate
         };
 
-        fetchWithToken('http://localhost:8080/habit/save', {
+        fetchWithToken(config.url + '/habit/save', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -47,7 +48,7 @@ window.getHabitList = getHabitList;
 window.signOut = signOut;
 
 function getHabitList() {
-    fetchWithToken('http://localhost:8080/habit/list', {
+    fetchWithToken(config.url + '/habit/list', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -121,7 +122,7 @@ function getHabitList() {
 
 function handleDeleteHabit(event) {
     const habitId = event.target.getAttribute("habitId"); // 获取存储在按钮上的习惯 ID
-    fetchWithToken("http://localhost:8080/habit/delete?id=" + habitId, {
+    fetchWithToken(config.url + "/habit/delete?id=" + habitId, {
             method: 'GET'
         })
         .then(response => {
@@ -139,7 +140,7 @@ function handleDeleteHabit(event) {
 
 function handleTodoHabit(event) {
     const habitId = event.target.getAttribute("habitId"); // 获取存储在按钮上的习惯 ID
-    fetchWithToken("http://localhost:8080/habit/check?id=" + habitId, {
+    fetchWithToken(config.url + "/habit/check?id=" + habitId, {
         method: 'GET'
     })
         .then(response => {

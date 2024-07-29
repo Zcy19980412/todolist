@@ -50,6 +50,8 @@ public class WebConfig implements WebMvcConfigurer {
     public boolean checkLoginPath(HttpServletRequest httpServletRequest) {
         return !(httpServletRequest.getServletPath().startsWith("/security")
                 || httpServletRequest.getServletPath().startsWith("/user/save")
+                //排除前端文件
+                || httpServletRequest.getServletPath().contains(".")
                 || "OPTIONS".equals(httpServletRequest.getMethod())
         );
     }
