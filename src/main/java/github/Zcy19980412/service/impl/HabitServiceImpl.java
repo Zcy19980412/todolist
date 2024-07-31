@@ -148,20 +148,33 @@ public class HabitServiceImpl implements HabitService {
     @Override
     public void delete(Long id) {
         Connection connection = null;
-        PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatementDeleteHabit = null;
+        PreparedStatement preparedStatementDeteleHabitRecord = null;
+        //删除习惯
         try {
             connection = jdbcUtils.getConnection();
-            preparedStatement = jdbcUtils.getPreparedStatement(
+            preparedStatementDeleteHabit = jdbcUtils.getPreparedStatement(
                     connection, "delete from habit where id = ?");
-            preparedStatement.setLong(1, id);
-            preparedStatement.execute();
+            preparedStatementDeleteHabit.setLong(1, id);
+            preparedStatementDeleteHabit.execute();
+            preparedStatementDeteleHabitRecord = jdbcUtils.getPreparedStatement(
+                    connection, "delete from habit_record where habit_id = ?");
+            preparedStatementDeteleHabitRecord.setLong(1, id);
+            preparedStatementDeteleHabitRecord.execute();
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         } finally {
-            if (preparedStatement != null) {
+            if (preparedStatementDeleteHabit != null) {
                 try {
-                    preparedStatement.close();
+                    preparedStatementDeleteHabit.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (preparedStatementDeteleHabitRecord != null) {
+                try {
+                    preparedStatementDeteleHabitRecord.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
