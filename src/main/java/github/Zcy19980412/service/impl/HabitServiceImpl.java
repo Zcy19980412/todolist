@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -114,7 +115,7 @@ public class HabitServiceImpl implements HabitService {
                                 .doneRate(resultSet.getBigDecimal("done_rate"))
                                 .importantRate(resultSet.getInt("important_rate"))
                                 .totalDays(resultSet.getInt("totalDays"))
-                                .doneDays(resultSet.getBigDecimal("done_rate").multiply(new BigDecimal(resultSet.getInt("totalDays"))).intValue())
+                                .doneDays(resultSet.getBigDecimal("done_rate").multiply(new BigDecimal(resultSet.getInt("totalDays"))).setScale(0,RoundingMode.HALF_UP).intValue())
                                 .build()
                 );
             }

@@ -5,4 +5,4 @@ CREATE TABLE `user`(
     user_name VARCHAR(200) NOT NULL COMMENT '用户名',
     real_name VARCHAR(200) NOT NULL COMMENT '真实姓名',
     password VARCHAR(200) NOT NULL COMMENT '密码'
-)
+);
