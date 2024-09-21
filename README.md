@@ -1,5 +1,5 @@
 ### introduction
-TodoListManagement designed to help you building habits by setting goals and recording your checkups. To use this management , you only need three steps.
+TodoListManagement designed to help you build habits by setting goals and recording your checkups. To use this management , you only need three steps.
 
 1. list a habit which you want to build
 2. make a todolist to set repeat date
