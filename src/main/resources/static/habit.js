@@ -62,6 +62,7 @@ function getHabitList() {
         const message = response.message;
         const tableBody = document.querySelector("#habitList tbody");
         tableBody.innerHTML = '';
+        // todo: simpify
         message.forEach(habit=>{
             const row = document.createElement('tr');
             const cellImportantRate = document.createElement("td");
